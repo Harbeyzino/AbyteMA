@@ -90,6 +90,10 @@ const aiCommand = require('./commands/ai');
 const { handleTranslateCommand } = require('./commands/translate');
 const { handleSsCommand } = require('./commands/ss');
 const { addCommandReaction, handleAreactCommand } = require('./lib/reactions');
+const { goodnightCommand } = require('./commands/goodnight');
+const { shayariCommand } = require('./commands/shayari');
+const { rosedayCommand } = require('./commands/roseday');
+const imagineCommand = require('./commands/imagine');
 
 
 // Global settings
@@ -712,7 +716,7 @@ async function handleMessages(sock, messageUpdate, printLog) {
             case userMessage === '.setpp':
                 await setProfilePicture(sock, chatId, message);
                 break;
-            case userMessage.startsWith('.instagram') || userMessage.startsWith('.igdl') || userMessage.startsWith('.ig'):
+            case userMessage.startsWith('.instagram') || userMessage.startsWith('.insta') || userMessage.startsWith('.ig'):
                 await instagramCommand(sock, chatId, message);
                 break;
             case userMessage.startsWith('.fb') || userMessage.startsWith('.facebook'):
@@ -741,6 +745,18 @@ async function handleMessages(sock, messageUpdate, printLog) {
             case userMessage.startsWith('.areact') || userMessage.startsWith('.autoreact') || userMessage.startsWith('.autoreaction'):
                 const isOwner = message.key.fromMe;
                 await handleAreactCommand(sock, chatId, message, isOwner);
+                break;
+            case userMessage === '.goodnight' || userMessage === '.lovenight' || userMessage === '.gn':
+                await goodnightCommand(sock, chatId);
+                break;
+            case userMessage === '.shayari' || userMessage === '.shayri':
+                await shayariCommand(sock, chatId);
+                break;
+            case userMessage === '.roseday':
+                await rosedayCommand(sock, chatId);
+                break;
+            case userMessage.startsWith('.imagine') || userMessage.startsWith('.flux') || userMessage.startsWith('.dalle'):
+                await imagineCommand(sock, chatId, message);
                 break;
             default:
                 if (isGroup) {
