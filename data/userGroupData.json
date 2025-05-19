@@ -7,6 +7,9 @@
   "sudo": [],
   "welcome": {},
   "goodbye": {},
-  "chatbot": {},
+  "chatbot": {
+    "120363402267385280@g.us": true,
+    "120363322949592477@g.us": true
+  },
   "autoReaction": false
 }

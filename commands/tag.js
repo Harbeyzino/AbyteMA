@@ -17,6 +17,22 @@ async function downloadMediaMessage(message, mediaType) {
 async function tagCommand(sock, chatId, senderId, messageText, replyMessage) {
     const { isSenderAdmin, isBotAdmin } = await isAdmin(sock, chatId, senderId);
 
+    // Debug logging
+    const groupMetadata = await sock.groupMetadata(chatId);
+    const botJid = sock.user.id;
+    const botNumber = botJid.split('@')[0].split(':')[0];
+    console.log('[BOT DEBUG] Actual bot JID:', botJid);
+    console.log('[BOT DEBUG] Actual bot number:', botNumber);
+    const botJidNormalized = sock.user.id.split(':')[0] + '@s.whatsapp.net';
+    const botParticipant = groupMetadata.participants.find(p => p.id === botJidNormalized);
+    console.log('[TAG DEBUG] Bot JID:', botJidNormalized);
+    console.log('[TAG DEBUG] Bot participant:', botParticipant);
+    console.log('[TAG DEBUG] isBotAdmin:', isBotAdmin);
+    console.log('[TAG DEBUG] isSenderAdmin:', isSenderAdmin);
+    if (!botParticipant) {
+        console.log('[TAG DEBUG] All participant JIDs:', groupMetadata.participants.map(p => p.id));
+    }
+
     if (!isBotAdmin) {
         await sock.sendMessage(chatId, { text: 'Please make the bot an admin first.' });
         return;
@@ -31,7 +47,6 @@ async function tagCommand(sock, chatId, senderId, messageText, replyMessage) {
         return;
     }
 
-    const groupMetadata = await sock.groupMetadata(chatId);
     const participants = groupMetadata.participants;
     const mentionedJidList = participants.map(p => p.id);
 
